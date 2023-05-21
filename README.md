@@ -50,6 +50,6 @@ API Endpoints
 Built With
 ----------
 
--   ASP.NET Core 5.0
+-   ASP.NET Core 6.0 Web API 
 -   Entity Framework Core
 -   AutoMapper
