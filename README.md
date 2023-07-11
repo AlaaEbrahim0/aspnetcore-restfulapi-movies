@@ -19,7 +19,6 @@ Getting Started
 3.  In the `appsettings.json` file, update the `DefaultConnection` string to point to your SQL Server instance
 4.  Open the `Package Manager Console` and run the following command to create the database:
 
-Copy
 
 ```
 Update-Database
@@ -50,6 +49,6 @@ API Endpoints
 Built With
 ----------
 
--   ASP.NET Core 5.0
+-   ASP.NET Core 6.0
 -   Entity Framework Core
 -   AutoMapper

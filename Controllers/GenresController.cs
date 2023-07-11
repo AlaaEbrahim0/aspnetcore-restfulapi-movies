@@ -1,13 +1,15 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.JSInterop.Infrastructure;
 using MoviesApi.Models;
-using MoviesApi.Services;
+using MoviesApi.Services.Contracts;
 
 namespace WebApplication1.Controllers
 {
-    [Route("api/[controller]")]
+	[Authorize]
+	[Route("api/[controller]")]
 	[ApiController]
 	public class GenresController : ControllerBase
 	{

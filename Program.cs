@@ -1,13 +1,21 @@
 using System.ComponentModel;
+using System.Text;
+using System.Transactions;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Protocols;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using MoviesApi.Helpers;
 using MoviesApi.Services;
+using MoviesApi.Services.Contracts;
 
 namespace WebApplication1
 {
-	public class Program
+    public class Program
 	{
 		public static void Main(string[] args)
 		{
@@ -23,8 +31,24 @@ namespace WebApplication1
 			// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 			builder.Services.AddEndpointsApiExplorer();
 
+			builder.Services.AddAutoMapper(typeof(Program));
+
 			builder.Services.AddTransient<IGenresService, GenresService>();
 			builder.Services.AddTransient<IMoviesService, MoviesService>();
+			builder.Services.AddScoped<IAuthService, AuthService>();
+			builder.Services.AddScoped<Jwt>();
+
+
+			builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+			{
+				options.Password.RequireNonAlphanumeric = false;
+				options.Password.RequireLowercase = true;
+				options.Password.RequireUppercase = true;
+				options.Password.RequireDigit = true;
+			})
+				.AddEntityFrameworkStores<ApplicationDbContext>();
+
+			builder.Services.Configure<Jwt>(builder.Configuration.GetSection("Jwt"));
 
 			builder.Services.AddCors(options =>
 			{
@@ -36,36 +60,53 @@ namespace WebApplication1
 				});
 			});
 
-			builder.Services.AddAutoMapper(typeof(Program));
+
+			builder.Services.AddAuthentication(options =>
+			{
+				options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+				options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+			})
+				.AddJwtBearer(opt =>
+				{
+					opt.RequireHttpsMetadata = false;
+					opt.SaveToken = false;
+					opt.TokenValidationParameters = new TokenValidationParameters
+					{
+						ValidateIssuerSigningKey = true,
+						ValidateIssuer = true,
+						ValidateAudience = true,
+						ValidateLifetime = true,
+
+						ValidIssuer = builder.Configuration.GetConnectionString("Jwt:Issuer"),
+						ValidAudience = builder.Configuration.GetConnectionString("Jwt:Audience"),
+
+						IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"])),
+					};
+				});
+
 
 			builder.Services.AddSwaggerGen(options =>
 			{
 				options.SwaggerDoc("v1", new OpenApiInfo
 				{
 					Version = "v1",
-					Title = "TestApi",
+					Title = "MoviesApi",
+					Description = "Test Description",
 					Contact = new OpenApiContact
 					{
-						Name = "Alaa",
-						Email = "test@domain.com",
-						Url = new Uri("https://google.com")
-					},
-					License = new OpenApiLicense
-					{
-						Name = "My License",
-						Url = new Uri("https://google.com")
+						Name = "Alaa Ebrahim",
+						Email = "alaaebrahim387@gmail.com",
 					}
-				});
 
+				});
 				options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
 				{
 					Name = "Authorization",
 					Type = SecuritySchemeType.ApiKey,
-					In = ParameterLocation.Header,
+					Scheme = "Bearer",
 					BearerFormat = "JWT",
-					Description = "Enter your JWT key"
+					In = ParameterLocation.Header,
 				});
-
 				options.AddSecurityRequirement(new OpenApiSecurityRequirement
 				{
 					{
@@ -77,12 +118,14 @@ namespace WebApplication1
 								Id = "Bearer"
 							},
 							Name = "Bearer",
-							In = ParameterLocation.Header
+							In = ParameterLocation.Header,
+
 						},
 						new List<string>()
 					}
 				});
 			});
+
 
 			var app = builder.Build();
 
@@ -97,11 +140,14 @@ namespace WebApplication1
 
 			app.UseCors();
 
+			app.UseAuthentication();
+
 			app.UseAuthorization();
 
 			app.MapControllers();
 
 			app.Run();
+			
 		}
 	}
 }

@@ -1,9 +1,10 @@
 ﻿using System.Runtime.CompilerServices;
 using Microsoft.EntityFrameworkCore;
+using MoviesApi.Services.Contracts;
 
 namespace MoviesApi.Services
 {
-	public class MoviesService : IMoviesService
+    public class MoviesService : IMoviesService
 	{
 		private readonly ApplicationDbContext context;
 

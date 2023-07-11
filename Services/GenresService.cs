@@ -1,8 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using MoviesApi.Services.Contracts;
 
 namespace MoviesApi.Services
 {
-	public class GenresService : IGenresService
+    public class GenresService : IGenresService
 	{
 		private readonly ApplicationDbContext context;
 

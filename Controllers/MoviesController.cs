@@ -1,16 +1,17 @@
 ﻿using System.Runtime.CompilerServices;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.JSInterop.Infrastructure;
 using Microsoft.VisualBasic;
 using MoviesApi.Migrations;
 using MoviesApi.Models;
-using MoviesApi.Services;
+using MoviesApi.Services.Contracts;
 
 namespace MoviesApi.Controllers
 {
-	[Route("api/[controller]")]
+    [Route("api/[controller]")]
 	[ApiController]
 	public class MoviesController : ControllerBase
 	{
