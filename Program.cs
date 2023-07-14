@@ -65,24 +65,26 @@ namespace WebApplication1
 			{
 				options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
 				options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+				
 			})
-				.AddJwtBearer(opt =>
+			.AddJwtBearer(opt =>
+			{
+				opt.RequireHttpsMetadata = false;
+				opt.SaveToken = false;
+
+				opt.TokenValidationParameters = new TokenValidationParameters
 				{
-					opt.RequireHttpsMetadata = false;
-					opt.SaveToken = false;
-					opt.TokenValidationParameters = new TokenValidationParameters
-					{
-						ValidateIssuerSigningKey = true,
-						ValidateIssuer = true,
-						ValidateAudience = true,
-						ValidateLifetime = true,
+					ValidateIssuerSigningKey = true,
+					ValidateIssuer = true,
+					ValidateAudience = true,
+					ValidateLifetime = true,
 
-						ValidIssuer = builder.Configuration.GetConnectionString("Jwt:Issuer"),
-						ValidAudience = builder.Configuration.GetConnectionString("Jwt:Audience"),
+					ValidIssuer = builder.Configuration["Jwt:Issuer"],
+					ValidAudience = builder.Configuration["Jwt:Audience"],
 
-						IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"])),
-					};
-				});
+					IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"])),
+				};
+			});
 
 
 			builder.Services.AddSwaggerGen(options =>

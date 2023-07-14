@@ -8,7 +8,7 @@ using MoviesApi.Services.Contracts;
 
 namespace WebApplication1.Controllers
 {
-	[Authorize]
+	[Authorize(Roles = "Admin")]
 	[Route("api/[controller]")]
 	[ApiController]
 	public class GenresController : ControllerBase
@@ -20,6 +20,7 @@ namespace WebApplication1.Controllers
 			this.genresService = genresService;
 		}
 
+		[AllowAnonymous]
 		[HttpGet]
 		public async Task<IActionResult> GetAllAsync()
 		{

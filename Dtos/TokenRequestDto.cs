@@ -8,6 +8,6 @@ namespace MoviesApi.Dtos
         public string Email { get; set; }
 
 		[Required, PasswordPropertyText]
-		public string Password { get; set; }
+		public string Password { get; set; }	
     }
 }

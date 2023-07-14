@@ -11,6 +11,7 @@ using MoviesApi.Services.Contracts;
 
 namespace MoviesApi.Controllers
 {
+	[Authorize(Roles = "Admin")] 
     [Route("api/[controller]")]
 	[ApiController]
 	public class MoviesController : ControllerBase
@@ -34,6 +35,7 @@ namespace MoviesApi.Controllers
 		}
 
 		[HttpGet]
+		[AllowAnonymous]
 		public async Task<IActionResult> GetAllAsync()
 		{
 			var movies = await moviesService.GetAll();
@@ -42,8 +44,8 @@ namespace MoviesApi.Controllers
 
 			return Ok(data);
 		}
-
-		[HttpGet("{id}")]
+        [AllowAnonymous]
+        [HttpGet("{id}")]
 		public async Task<IActionResult> GetAsync(int id)
 		{
 			var movie = await moviesService.GetById(id);
@@ -58,7 +60,8 @@ namespace MoviesApi.Controllers
 			return Ok(data);
 		}
 
-		[HttpGet("GetAllInGenre")]
+        [HttpGet("GetAllInGenre")]
+		[AllowAnonymous]
 		public async Task<IActionResult> GetAllInGenreAsync(byte genreId)
 		{
 			var movies = await moviesService.GetAll(genreId);
@@ -69,7 +72,10 @@ namespace MoviesApi.Controllers
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> CreateAsync([FromForm] MovieDto dto)
+        [Authorize(Roles = "Admin")]
+
+
+        public async Task<IActionResult> CreateAsync([FromForm] MovieDto dto)
 		{
 			if (dto.Poster == null)
 			{
@@ -108,7 +114,8 @@ namespace MoviesApi.Controllers
 
 		}
 
-		[HttpPut]
+        [Authorize(Roles = "Admin")]
+        [HttpPut]
 		public async Task<IActionResult> UpdateAsync(int id, [FromForm] MovieDto dto)
 		{
 
@@ -158,7 +165,8 @@ namespace MoviesApi.Controllers
 
 		}
 
-		[HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
+        [HttpDelete("{id}")]
 		public async Task<IActionResult> DeleteAsync(int id)
 		{
 			var movie = await moviesService.GetById(id);

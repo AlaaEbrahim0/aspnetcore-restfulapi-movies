@@ -17,6 +17,7 @@ namespace MoviesApi.Controllers
 		}
 
         [HttpPost]
+		[AllowAnonymous]
 		public async Task<ActionResult<AuthDto>> RegisterAsync ([FromBody] RegisterDto dto)
 		{
 			try
@@ -42,7 +43,9 @@ namespace MoviesApi.Controllers
 		}
 
 		[HttpPost]
-		public async Task<ActionResult<AuthDto>> LoginAsync([FromBody] TokenRequestDto dto)
+        [AllowAnonymous]
+
+        public async Task<ActionResult<AuthDto>> LoginAsync([FromBody] TokenRequestDto dto)
 		{
 			try
 			{
@@ -66,6 +69,28 @@ namespace MoviesApi.Controllers
 			}
 		}
 
+		[HttpPost]
+		[Authorize(Roles = "Admin")]
+		public async Task<ActionResult<string>> AddRoleAsync([Required] string roleName)
+		{
+			try
+			{
+				if (!ModelState.IsValid)
+					return BadRequest(roleName);
+
+				var result = await authService.AddRoleAsync(roleName);
+				if (!string.IsNullOrEmpty(result))
+					return BadRequest(result);
+
+				return Ok(result);
+			}
+			catch (Exception ex)
+			{
+				return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+			}
+		}
+
+
 		[Authorize(Roles = "Admin")]
 		[HttpPost]
 		public async Task<ActionResult<string>> AddUserToRoleAsync (AddUserToRoleDto dto)
@@ -75,7 +100,7 @@ namespace MoviesApi.Controllers
 				if (!ModelState.IsValid)
 					return BadRequest(dto);
 
-				var result = await authService.AddUserToRole(dto);
+				var result = await authService.AddUserToRoleAsync(dto);
 				if (!string.IsNullOrEmpty(result))
 				{
 					return BadRequest(result);
@@ -88,5 +113,7 @@ namespace MoviesApi.Controllers
 				return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
 			}
 		}
+
+		
 	}
 }
