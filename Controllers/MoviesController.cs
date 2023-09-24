@@ -11,7 +11,7 @@ using MoviesApi.Services.Contracts;
 
 namespace MoviesApi.Controllers
 {
-	[Authorize(Roles = "Admin")] 
+	//[Authorize(Roles = "Admin")] 
     [Route("api/[controller]")]
 	[ApiController]
 	public class MoviesController : ControllerBase
@@ -35,7 +35,7 @@ namespace MoviesApi.Controllers
 		}
 
 		[HttpGet]
-		[AllowAnonymous]
+		//[Authorize(Roles = "User")]
 		public async Task<IActionResult> GetAllAsync()
 		{
 			var movies = await moviesService.GetAll();

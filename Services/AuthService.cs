@@ -99,7 +99,16 @@ namespace MoviesApi.Services
 			};
 		}
 
-		public async Task<AuthDto> RegisterAsync(RegisterDto dto)
+        public async Task SignOutAsync(string userId)
+        {
+            var user = await userManager.FindByIdAsync(userId);
+            if (user is not null)
+            {
+                await signInManager.SignOutAsync();
+            }
+        }
+
+        public async Task<AuthDto> RegisterAsync(RegisterDto dto)
 		{
 			var userEmail = await userManager.FindByEmailAsync(dto.Email);
 			var userName = await userManager.FindByNameAsync(dto.Email);

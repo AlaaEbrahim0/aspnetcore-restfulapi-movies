@@ -30,7 +30,7 @@ namespace MoviesApi.Services
 
 		public async Task<IEnumerable<Genre>> GetAll()
 		{
-			var genres = await context.Genres.OrderBy(x => x.Name).ToListAsync();
+			var genres = await context.Genres.OrderBy(x => x.Id).ToListAsync();
 			return genres;
 		}
 

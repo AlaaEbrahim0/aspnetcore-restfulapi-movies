@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MoviesApi.Helpers;
 using MoviesApi.Services.Contracts;
@@ -114,6 +115,16 @@ namespace MoviesApi.Controllers
 			}
 		}
 
-		
-	}
+		[Authorize]
+        [HttpPost()]
+        public async Task<IActionResult> Logout()
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (!string.IsNullOrEmpty(userId))
+            {
+                await authService.SignOutAsync(userId);
+            }
+            return Ok();
+        }
+    }
 }
