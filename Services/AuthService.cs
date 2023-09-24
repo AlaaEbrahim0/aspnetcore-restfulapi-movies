@@ -1,15 +1,4 @@
-﻿using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
-using AutoMapper;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
-using MoviesApi.Helpers;
-using MoviesApi.Services.Contracts;
-
-namespace MoviesApi.Services
+﻿namespace MoviesApi.Services
 {
 	public class AuthService : IAuthService
 	{

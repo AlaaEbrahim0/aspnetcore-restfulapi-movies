@@ -1,18 +1,10 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System.IO;
 using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.JSInterop.Infrastructure;
-using Microsoft.VisualBasic;
-using MoviesApi.Migrations;
-using MoviesApi.Models;
-using MoviesApi.Services.Contracts;
 
 namespace MoviesApi.Controllers
 {
-	//[Authorize(Roles = "Admin")] 
-    [Route("api/[controller]")]
+	[Authorize(Roles = "User")] 
+	[Route("api/[controller]")]
 	[ApiController]
 	public class MoviesController : ControllerBase
 	{
@@ -35,7 +27,6 @@ namespace MoviesApi.Controllers
 		}
 
 		[HttpGet]
-		//[Authorize(Roles = "User")]
 		public async Task<IActionResult> GetAllAsync()
 		{
 			var movies = await moviesService.GetAll();
@@ -61,7 +52,6 @@ namespace MoviesApi.Controllers
 		}
 
         [HttpGet("GetAllInGenre")]
-		[AllowAnonymous]
 		public async Task<IActionResult> GetAllInGenreAsync(byte genreId)
 		{
 			var movies = await moviesService.GetAll(genreId);
@@ -73,8 +63,6 @@ namespace MoviesApi.Controllers
 
 		[HttpPost]
         [Authorize(Roles = "Admin")]
-
-
         public async Task<IActionResult> CreateAsync([FromForm] MovieDto dto)
 		{
 			if (dto.Poster == null)

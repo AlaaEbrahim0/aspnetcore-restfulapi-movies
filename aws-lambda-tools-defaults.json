@@ -1,0 +1,8 @@
+
+{
+    "region" : "us-west-2",
+    "profile" : "default",
+    "s3-bucket" : "awsdragonbucketlab01",
+    "template"  : "serverless.template",
+    "stack-name" : "MoviesApiStack"
+}

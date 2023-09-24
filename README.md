@@ -8,8 +8,8 @@ Getting Started
 
 ### Prerequisites
 
--   .NET 5.0
--   Visual Studio 2019 or later
+-   .NET SKD 6.0 
+-   Visual Studio
 -   SQL Server 2019 or later
 
 ### Installing

@@ -89,15 +89,13 @@ public class Startup
 
 		app.UseHttpsRedirection();
 
-		app.UseCors("CorsPolicy");
-
 		app.UseRouting();
 
 		app.UseCors("CorsPolicy");
 
 		app.UseAuthentication();
 
-		app.UseAuthentication();
+		app.UseAuthorization();
 
 		app.UseEndpoints(endpoints =>
 		{

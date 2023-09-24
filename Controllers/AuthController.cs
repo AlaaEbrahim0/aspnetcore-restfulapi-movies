@@ -1,8 +1,4 @@
-﻿using System.Security.Claims;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using MoviesApi.Helpers;
-using MoviesApi.Services.Contracts;
+﻿
 
 namespace MoviesApi.Controllers
 {

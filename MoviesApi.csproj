@@ -6,8 +6,10 @@
     <ImplicitUsings>disable</ImplicitUsings>
     <UserSecretsId>fb10e794-0030-4075-a0bb-76bf3bde8eb9</UserSecretsId>
   </PropertyGroup>
-
+    
   <ItemGroup>
+	<DotNetCliToolReference Include="Amazon.Lambda.Tools" Version="2.2.0" />
+    <PackageReference Include="Amazon.Lambda.AspNetCoreServer" Version="8.1.0" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.16" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.16" />
